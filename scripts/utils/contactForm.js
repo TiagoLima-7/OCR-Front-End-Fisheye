@@ -1,23 +1,14 @@
 let previousActiveElement;
 
+// Gestion de la modale
 function displayModal(photographerName) {
     const modal = document.getElementById('contact_modal');
     modal.hidden = false;
     modal.setAttribute('aria-hidden', 'false');
-    
-    // Ajout du nom du photographe
     document.getElementById('modalPhotographerName').textContent = photographerName;
-    
-    // Sauvegarde de l'élément actif
     previousActiveElement = document.activeElement;
-    
-    // Gestion du focus
     document.querySelector('.close-button').focus();
-    
-    // Empêcher le défilement de la page
     document.body.style.overflow = 'hidden';
-    
-    // Ajouter l'écouteur clavier
     modal.addEventListener('keydown', trapFocus);
 }
 
@@ -25,76 +16,111 @@ function closeModal() {
     const modal = document.getElementById('contact_modal');
     modal.hidden = true;
     modal.setAttribute('aria-hidden', 'true');
-    
-    // Restaurer le défilement
     document.body.style.overflow = '';
-    
-    // Restaurer le focus
     previousActiveElement.focus();
-    
-    // Nettoyer les écouteurs
     modal.removeEventListener('keydown', trapFocus);
 }
 
 function trapFocus(e) {
-    const modal = document.getElementById('contact_modal');
-    const focusable = modal.querySelectorAll('button, input, textarea, [tabindex]:not([tabindex="-1"])');
-    const firstFocusable = focusable[0];
-    const lastFocusable = focusable[focusable.length - 1];
+    if (e.key === 'Escape') closeModal();
 
-    if (e.key === 'Escape') {
-        closeModal();
-        return;
-    }
+    const focusable = document.querySelectorAll(
+        '#contact_modal button, #contact_modal input, #contact_modal textarea'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
 
     if (e.key === 'Tab') {
-        if (e.shiftKey && document.activeElement === firstFocusable) {
+        if (e.shiftKey && document.activeElement === first) {
             e.preventDefault();
-            lastFocusable.focus();
-        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
             e.preventDefault();
-            firstFocusable.focus();
+            first.focus();
         }
     }
 }
 
-// Gestion du formulaire
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    
-    console.log('Données du formulaire:', data);
-    e.target.reset();
-    closeModal();
+// Validation
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        resetValidationStates();
+        
+        if (!validateForm()) {
+            // Animation globale si échec
+            contactForm.querySelectorAll('.invalid').forEach(field => {
+                field.style.animation = 'aggressive-shake 1s';
+            });
+        } else {
+            console.log('Formulaire valide', getFormData());
+            contactForm.reset();
+            closeModal();
+        }
+    });
+
+    // Validation en temps réel
+    contactForm.querySelectorAll('input, textarea').forEach(field => {
+        field.addEventListener('input', () => {
+            if (field.classList.contains('invalid')) validateField(field);
+        });
+    });
 });
 
-// Validation en temps réel
-document.querySelectorAll('#contactForm input, #contactForm textarea').forEach(field => {
-    field.addEventListener('input', () => validateField(field));
-    field.addEventListener('blur', () => validateField(field));
-});
-
-function validateField(field) {
-    const error = field.nextElementSibling;
-    
-    if (field.validity.valid) {
-        error.textContent = '';
-        error.style.display = 'none';
-    } else {
-        showError(field, error);
-    }
+// Fonctions de validation
+function validateForm() {
+    let isValid = true;
+    document.querySelectorAll('#contactForm input, #contactForm textarea').forEach(field => {
+        if (!validateField(field)) isValid = false;
+    });
+    return isValid;
 }
 
-function showError(field, error) {
-    error.style.display = 'block';
+function validateField(field) {
+    const errorMsg = field.nextElementSibling;
     
-    if (field.validity.valueMissing) {
-        error.textContent = 'Ce champ est obligatoire';
-    } else if (field.validity.typeMismatch) {
-        error.textContent = field.id === 'email' 
-            ? 'Format email invalide' 
-            : 'Format incorrect';
+    if (!field.checkValidity()) {
+        field.classList.add('invalid');
+        field.setAttribute('aria-invalid', 'true');
+        if (errorMsg) {
+            errorMsg.classList.add('visible');
+            errorMsg.setAttribute('aria-live', 'assertive');
+            errorMsg.textContent = getErrorMessage(field);
+        }
+        return false;
     }
+    
+    field.classList.remove('invalid');
+    field.setAttribute('aria-invalid', 'false');
+    if (errorMsg) errorMsg.classList.remove('visible');
+    return true;
+}
+
+function getErrorMessage(field) {
+    if (field.validity.valueMissing) return 'Champ obligatoire';
+    if (field.validity.typeMismatch) return 'Format invalide';
+    if (field.validity.tooShort) return `Min. ${field.minLength} caractères`;
+    return 'Erreur de saisie';
+}
+
+function resetValidationStates() {
+    document.querySelectorAll('#contactForm .invalid').forEach(field => {
+        field.classList.remove('invalid');
+        field.style.animation = '';
+    });
+    document.querySelectorAll('#contactForm .error-message').forEach(msg => {
+        msg.classList.remove('visible');
+    });
+}
+
+function getFormData() {
+    const form = document.getElementById('contactForm');
+    return {
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        email: form.email.value,
+        message: form.message.value
+    };
 }

@@ -83,7 +83,7 @@ body {
     height: 350px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.07); */
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -114,12 +114,23 @@ body {
     color: #901C1C;
     font-weight: 400;
 }
-/* 
-.likes {
-    color: #901C1C;
-    font-size: 24px;
-    font-weight: 400;
-} */
+
+
+.photographer-pricetag {
+    position: fixed;
+    bottom: 0;
+    right: 5%;
+    padding: 16px 32px;
+    background: #DB8876;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.photographer-pricetag .pricetag-content {
+    display: flex
+    align-items: center;
+    gap: 50px;
+}
 
 
 
@@ -159,7 +170,7 @@ body {
     border-radius: 5px;
     background-color: #DB8876;
     width: 669px;
-    max-height: 90vh;
+    /* max-height: 90vh; */
     display: flex;
     flex-direction: column;
     padding: 35px;
@@ -173,20 +184,15 @@ body {
     justify-content: space-between;
     width: 100%;
     position: relative;
+    margin-top: 20px;
 }
 
 .modal header h2 {
     font-size: 64px;
     font-weight: normal;
-    margin: 0;
     width: 100%;
 }
 
-#modalPhotographerName {
-    font-size: 2rem;
-    margin-top: 0.5rem;
-    color: #312E2E;
-}
 
 .modal header .close-button {
     background: none;
@@ -199,7 +205,7 @@ body {
 
 form {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 form label {
@@ -208,7 +214,7 @@ form label {
 }
 
 form div {
-    margin-bottom: 26px;
+    margin-bottom: 15px;
     width: 100%;
 }
 
@@ -218,7 +224,7 @@ form textarea {
     padding: 10px;
     font-size: 24px;
     border-radius: 5px;
-    border: none;
+    border: 2px solid transparent;
 }
 
 form textarea {
@@ -226,19 +232,71 @@ form textarea {
     resize: vertical;
 }
 
+/* Style après validation incorrecte */
+form input.invalid,
+form textarea.invalid {
+    border-color: #901C1C;
+}
+
 .error-message {
+    display: none;
     color: #901C1C;
     font-size: 1.2rem;
     margin-top: 5px;
-    display: none;
 }
 
-input:invalid,
-textarea:invalid {
-    border: 2px solid #901C1C;
-}
-
-input:invalid + .error-message,
-textarea:invalid + .error-message {
+.error-message.visible {
     display: block;
 }
+
+.lightbox {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox__content {
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+  }
+  .lightbox-media {
+    width: 1050px;
+    height: 80vh;
+    /* margin-bottom: 1rem; */
+    object-fit: cover;
+  }
+  .lightbox__close, .lightbox__prev, .lightbox__next {
+    position: absolute;
+    color: #901C1C;
+    font-size: 72px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2010;
+  }
+  .lightbox__close { 
+    top: 20px;
+    right: 40px;
+  }
+  .lightbox__prev {
+    top: 50%;
+    transform: translate(calc(-525px - 20px - 50%), -50%);
+  }
+  .lightbox__next {
+    top: 50%;
+    transform: translate(calc(525px + 20px + 50%), -50%);
+
+  }
+  .lightbox-title {
+    color: #901C1C;
+    margin-top: 15px;
+  }
+  
+  
