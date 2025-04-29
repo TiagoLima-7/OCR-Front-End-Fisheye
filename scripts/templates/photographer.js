@@ -142,7 +142,7 @@ function MediaFactory(data, photographerName, index) {
             ${mediaContent}
             <div class="media-info">
                 <h3>${data.title}</h3>
-                <span class="likes">${data.likes} ❤</span>
+                    <p class="likes">${data.likes}<span><i class="fa-regular fa-heart"></i> <i class="fa-solid fa-heart"></i></span></p>
             </div>
         `;
         return mediaCard;

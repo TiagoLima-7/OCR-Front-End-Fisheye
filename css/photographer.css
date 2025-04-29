@@ -113,6 +113,9 @@ body {
     font-size: 1.1em;
     color: #901C1C;
     font-weight: 400;
+    display: flex;
+    gap: 8px;
+    position: relative;
 }
 
 
@@ -127,7 +130,7 @@ body {
 }
 
 .photographer-pricetag .pricetag-content {
-    display: flex
+    display: flex;
     align-items: center;
     gap: 50px;
 }
@@ -249,7 +252,7 @@ form textarea.invalid {
     display: block;
 }
 
-.lightbox {
+/* .lightbox {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: #FFFFFF;
@@ -264,12 +267,10 @@ form textarea.invalid {
     outline: none;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
   }
   .lightbox-media {
     width: 1050px;
     height: 80vh;
-    /* margin-bottom: 1rem; */
     object-fit: cover;
   }
   .lightbox__close, .lightbox__prev, .lightbox__next {
@@ -299,4 +300,92 @@ form textarea.invalid {
     margin-top: 15px;
   }
   
+   */
+
+   .lightbox {
+    position: fixed;
+    inset: 0;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    flex-direction: row;
+  }
   
+  .lightbox[hidden] { display: none; }
+  
+  .lightbox__content {
+    max-width: 80vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    outline: none;
+  }
+  
+  .lightbox__content img,
+  .lightbox__content video {
+    /* max-width: 80vw; */
+    max-width: 1050px;
+    max-height: 80vh;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .lightbox__caption {
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .lightbox__close, .lightbox__prev, .lightbox__next {
+    position: absolute;
+    color: #901C1C;
+    font-size: 72px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2010;
+  }
+
+  .lightbox__close { 
+    top: 20px;
+    right: 40px;
+  }
+  .lightbox__prev {
+    top: 50%;
+    transform: translate(calc(-525px - 20px - 50%), -50%);
+  }
+  .lightbox__next {
+    top: 50%;
+    transform: translate(calc(525px + 20px + 50%), -50%);
+
+  }
+  .lightbox-title {
+    color: #901C1C;
+    font-size: 24px;
+    margin-top: 15px;
+  }
+
+  .lightbox__close:focus,
+  .lightbox__prev:focus,
+  .lightbox__next:focus { outline: 2px solid #fff; }
+  
+
+  .fa-regular.fa-heart {
+    color: #901C1C;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.fa-solid.fa-heart {
+    color: #901C1C;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.media-card .likes span[role="button"]:focus {
+    outline: 2px solid #901C1C;
+    outline-offset: 2px;
+}

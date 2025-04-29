@@ -1,221 +1,163 @@
-// class Lightbox {
-//     constructor() {
-//       this.currentIndex = 0;
-//       this.mediaItems = [];
-//       this.initElements();
-//       this.initEvents();
-//     }
+(function () {
+    let medias = [];
+    let currentIndex = 0;
   
-//     initElements() {
-//       this.elements = {
-//         media: document.getElementById('lightbox-media'),
-//         video: document.getElementById('lightbox-video'),
-//         title: document.getElementById('lightbox-title'),
-//         prev: document.querySelector('.lightbox__prev'),
-//         next: document.querySelector('.lightbox__next'),
-//         close: document.querySelector('.lightbox__close'),
-//         container: document.querySelector('.lightbox__container')
-//       };
-//     }
+    const lightbox = document.getElementById('lightbox');
+    const content = lightbox.querySelector('.lightbox__content');
+    const btnClose = lightbox.querySelector('.lightbox__close');
+    const btnPrev = lightbox.querySelector('.lightbox__prev');
+    const btnNext = lightbox.querySelector('.lightbox__next');
   
-//     initEvents() {
-//       document.addEventListener('click', (e) => {
-//         if (e.target.closest('[data-lightbox-trigger]')) {
-//           const index = parseInt(e.target.closest('[data-lightbox-trigger]').dataset.index);
-//           this.open(index);
-//         }
-//       });
-  
-//       this.elements.prev.addEventListener('click', () => this.prev());
-//       this.elements.next.addEventListener('click', () => this.next());
-//       this.elements.close.addEventListener('click', () => this.close());
-//       this.elements.container.addEventListener('click', (e) => e.stopPropagation());
-  
-//       document.addEventListener('keydown', (e) => {
-//         if (this.lightbox.getAttribute('aria-hidden') === 'false') {
-//           switch(e.key) {
-//             case 'ArrowLeft': this.prev(); break;
-//             case 'ArrowRight': this.next(); break;
-//             case 'Escape': this.close(); break;
-//           }
-//         }
-//       });
-//     }
-  
-//     open(index) {
-//       this.currentIndex = index;
-//       this.loadMedia();
-//       this.lightbox.hidden = false;
-//       this.lightbox.setAttribute('aria-hidden', 'false');
-//       this.elements.close.focus();
-//       document.body.style.overflow = 'hidden';
-//     }
-  
-//     close() {
-//       this.lightbox.hidden = true;
-//       this.lightbox.setAttribute('aria-hidden', 'true');
-//       document.body.style.overflow = '';
-//       this.elements.video.pause();
-//     }
-  
-//     loadMedia() {
-//       const media = this.mediaItems[this.currentIndex];
-      
-//       if (media.type === 'image') {
-//         this.elements.media.src = media.src;
-//         this.elements.media.alt = media.title;
-//         this.elements.media.dataset.active = true;
-//         this.elements.video.dataset.active = false;
-//       } else {
-//         this.elements.video.src = media.src;
-//         this.elements.video.dataset.active = true;
-//         this.elements.media.dataset.active = false;
-//         this.elements.video.play();
-//       }
-      
-//       this.elements.title.textContent = media.title;
-//     }
-  
-//     prev() {
-//       this.currentIndex = (this.currentIndex - 1 + this.mediaItems.length) % this.mediaItems.length;
-//       this.loadMedia();
-//     }
-  
-//     next() {
-//       this.currentIndex = (this.currentIndex + 1) % this.mediaItems.length;
-//       this.loadMedia();
-//     }
-  
-//     setMediaItems(mediaArray) {
-//       this.mediaItems = mediaArray.map(item => ({
-//         src: item.image ? `assets/images/${item.photographerId}/${item.image}` 
-//                        : `assets/images/${item.photographerId}/${item.video}`,
-//         title: item.title,
-//         type: item.image ? 'image' : 'video'
-//       }));
-//     }
-//   }
-  
-//   // Initialisation globale
-//   document.addEventListener('DOMContentLoaded', () => {
-//     window.lightbox = new Lightbox();
-//   });
-  
-let lightboxMediaList = [];
-let lightboxPhotographerName = "";
-let currentLightboxIndex = 0;
-
-function initLightbox(mediaList, photographerName) {
-    lightboxMediaList = mediaList;
-    lightboxPhotographerName = photographerName;
-
-    const gallery = document.querySelector('.gallery-grid');
-    if (!gallery) return;
-
-    // Ouvre la lightbox au clic ou au clavier sur un média
-    gallery.addEventListener('click', onMediaOpenLightbox);
-    gallery.addEventListener('keydown', (e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('media-card')) {
-            e.preventDefault();
-            onMediaOpenLightbox(e, true);
+    // Récupère toutes les media-cards au chargement
+    function getGalleryMedias() {
+      const cards = document.querySelectorAll('.media-card');
+      medias = Array.from(cards).map(card => {
+        const img = card.querySelector('img');
+        const video = card.querySelector('video');
+        const title = card.querySelector('h3')?.textContent || '';
+        if (img) {
+          return {
+            type: 'image',
+            src: img.src,
+            alt: img.alt,
+            title
+          };
+        } else if (video) {
+          const source = video.querySelector('source');
+          return {
+            type: 'video',
+            src: source.src,
+            title
+          };
         }
-    });
-
-    // Boutons lightbox
-    document.querySelector('.lightbox__close').addEventListener('click', closeLightbox);
-    document.querySelector('.lightbox__prev').addEventListener('click', prevLightboxMedia);
-    document.querySelector('.lightbox__next').addEventListener('click', nextLightboxMedia);
-
-    // Navigation clavier dans la lightbox
-    document.addEventListener('keydown', lightboxKeyboardHandler);
-}
-
-function onMediaOpenLightbox(e, fromKeyboard = false) {
-    let target = e.target;
-    // Si on clique sur l'image/vidéo ou sur la carte
-    if (!target.classList.contains('media-card')) {
-        target = target.closest('.media-card');
+        return null;
+      }).filter(Boolean);
     }
-    if (!target) return;
-
-    const index = parseInt(target.getAttribute('data-index'));
-    if (isNaN(index)) return;
-    openLightbox(index);
-}
-
-function openLightbox(index) {
-    currentLightboxIndex = index;
-    updateLightbox();
-
-    const lightbox = document.getElementById('lightbox');
-    lightbox.hidden = false;
-    document.body.style.overflow = 'hidden';
-    lightbox.querySelector('.lightbox__content').focus();
-}
-
-function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    lightbox.hidden = true;
-    document.body.style.overflow = '';
-}
-
-function updateLightbox() {
-    const media = lightboxMediaList[currentLightboxIndex];
-    const content = document.querySelector('.lightbox__content');
-    content.innerHTML = '';
-
-    const photographerFolder = lightboxPhotographerName.replace(/[\s-]+/g, '');
-    let mediaElement;
-    if (media.image) {
-        mediaElement = document.createElement('img');
-        mediaElement.src = `assets/images/${photographerFolder}/${media.image}`;
-        mediaElement.alt = media.title;
-    } else if (media.video) {
-        mediaElement = document.createElement('video');
-        mediaElement.setAttribute('controls', '');
-        mediaElement.setAttribute('width', '800');
-        mediaElement.setAttribute('height', '600');
-        const source = document.createElement('source');
-        source.src = `assets/images/${photographerFolder}/${media.video}`;
-        source.type = 'video/mp4';
-        mediaElement.appendChild(source);
-        mediaElement.alt = media.title;
+  
+    // Affiche le média courant dans la lightbox
+    function showMedia(index) {
+      if (!medias[index]) return;
+      currentIndex = index;
+      const media = medias[index];
+      content.innerHTML = '';
+      let element;
+      if (media.type === 'image') {
+        element = document.createElement('img');
+        element.src = media.src;
+        element.alt = media.alt || media.title || '';
+      } else if (media.type === 'video') {
+        element = document.createElement('video');
+        element.controls = true;
+        element.autoplay = true;
+        element.innerHTML = `<source src="${media.src}" type="video/mp4">Votre navigateur ne supporte pas la vidéo.`;
+      }
+      element.tabIndex = 0;
+      content.appendChild(element);
+  
+      // Affiche le titre
+      if (media.title) {
+        const caption = document.createElement('div');
+        caption.className = 'lightbox-title';
+        caption.textContent = media.title;
+        content.appendChild(caption);
+      }
+      // Focus pour accessibilité
+      setTimeout(() => element.focus(), 50);
     }
-    mediaElement.classList.add('lightbox-media');
-    content.appendChild(mediaElement);
-
-    // Ajoute le titre en dessous
-    const title = document.createElement('h2');
-    title.textContent = media.title;
-    title.className = 'lightbox-title';
-    content.appendChild(title);
-}
-
-function prevLightboxMedia() {
-    currentLightboxIndex = (currentLightboxIndex - 1 + lightboxMediaList.length) % lightboxMediaList.length;
-    updateLightbox();
-}
-
-function nextLightboxMedia() {
-    currentLightboxIndex = (currentLightboxIndex + 1) % lightboxMediaList.length;
-    updateLightbox();
-}
-
-function lightboxKeyboardHandler(e) {
-    const lightbox = document.getElementById('lightbox');
-    if (lightbox.hidden) return;
-
-    switch (e.key) {
-        case 'ArrowLeft':
-            prevLightboxMedia();
-            break;
+  
+    function openLightbox(index) {
+      getGalleryMedias();
+      showMedia(index);
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      lightbox.setAttribute('aria-hidden', 'false');
+      btnClose.focus();
+      // Piège le focus dans la lightbox
+      document.addEventListener('keydown', handleKeydown);
+    }
+  
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.removeEventListener('keydown', handleKeydown);
+    }
+  
+    function nextMedia() {
+      showMedia((currentIndex + 1) % medias.length);
+    }
+  
+    function prevMedia() {
+      showMedia((currentIndex - 1 + medias.length) % medias.length);
+    }
+  
+    // Gestion clavier (flèches, esc, tab)
+    function handleKeydown(e) {
+      switch (e.key) {
         case 'ArrowRight':
-            nextLightboxMedia();
-            break;
+          e.preventDefault();
+          nextMedia();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          prevMedia();
+          break;
         case 'Escape':
-            closeLightbox();
-            break;
-        default:
-            break;
+          e.preventDefault();
+          closeLightbox();
+          break;
+        case 'Tab':
+          // Piège le focus dans la lightbox
+          trapFocus(e);
+          break;
+      }
     }
-}
+  
+    // Piège le focus dans la lightbox
+    function trapFocus(e) {
+      const focusables = lightbox.querySelectorAll('button, [tabindex="0"]');
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    }
+  
+    // Listeners boutons
+    btnClose.addEventListener('click', closeLightbox);
+    btnNext.addEventListener('click', nextMedia);
+    btnPrev.addEventListener('click', prevMedia);
+  
+    // Ouvre la lightbox au clic sur une media-card
+    document.addEventListener('click', function (e) {
+      const card = e.target.closest('.media-card');
+      if (!card) return;
+      const idx = parseInt(card.getAttribute('data-index'), 10);
+      if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+        openLightbox(idx);
+      }
+    });
+  
+    // Ouvre la lightbox au clavier (Entrée ou Espace sur une media-card)
+    document.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && document.activeElement.classList.contains('media-card')) {
+        const idx = parseInt(document.activeElement.getAttribute('data-index'), 10);
+        openLightbox(idx);
+        e.preventDefault();
+      }
+    });
+  
+    // Ferme la lightbox si on clique en dehors du contenu
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+  })();
+  
