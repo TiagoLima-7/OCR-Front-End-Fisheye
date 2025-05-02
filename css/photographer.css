@@ -83,8 +83,6 @@ body {
     height: 350px;
     background: #fff;
     border-radius: 8px;
-    /* box-shadow: 0 2px 8px rgba(0,0,0,0.07); */
-    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -96,6 +94,7 @@ body {
     height: 300px; /* Hauteur fixe */
     object-fit: cover;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .media-info {
@@ -389,3 +388,34 @@ form textarea.invalid {
     outline: 2px solid #901C1C;
     outline-offset: 2px;
 }
+
+.sort-container {
+    margin: 40px 0 0 100px;
+}
+
+
+.sort-container label, .sort-container select {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.sort-container select, .sort-container option {
+    border: none;
+    background: #901C1C;
+    color: #FFF;
+    padding: 12px;
+    border-radius: 5px;
+    padding: 12px;
+}
+
+.sort-container hr {
+    border: 0;
+    border-top: 2px solid #FFF;
+    background:transparent;
+}
+/* .sort-container hr {
+    border: none;
+    outline: none;
+    height: 20px;
+    background-color: #FFF;
+} */

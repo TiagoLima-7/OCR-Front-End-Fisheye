@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="fr">
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -18,6 +18,40 @@
     <main id="main">
       <div class="photograph-header">
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      </div>
+      <div class="photographer-pricetag"></div>
+    </main> -->
+    <!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Fisheye - Photographe</title>
+  </head>
+  <body>
+    <header>
+      <a href="./index.html">
+          <img src="assets/images/logo.png" class="logo" alt="Logo Fisheye" />
+      </a>
+    </header>
+    <main id="main">
+      <div class="photograph-header">
+        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      </div>
+      <!-- Select de tri -->
+      <div class="sort-container">
+        <label for="sort-select">Trier par</label>
+        <select id="sort-select" aria-label="Trier la galerie">
+          <option value="popularity">Popularité</option>
+          <hr>
+          <option value="date">Date</option>
+          <hr>
+          <option value="title">Titre</option>
+        </select>
       </div>
       <div class="photographer-pricetag"></div>
     </main>
