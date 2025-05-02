@@ -1,26 +1,32 @@
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+    <!-- Déclaration de l'encodage et de la favicon -->
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="assets/favicon.png">
+    <!-- Feuille de style personnalisée -->
+    <link href="./css/style.css" rel="stylesheet" type="text/css">
+    <!-- Police Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <title>Fisheye</title>
   </head>
   <body>
+    <!-- En-tête du site avec logo et titre principal -->
     <header>
       <a href="#">
-        <img src="./assets/images/logo.png" class="logo" alt="fisheye logo"/>
+        <img src="./assets/images/logo.png" class="logo" alt="fisheye logo" />
       </a>
-        <h1>Nos photographes</h1>
+      <h1>Nos photographes</h1>
     </header>
+
+    <!-- Contenu principal de la page -->
     <main id="main">
-        <div class="photographer_section"></div>
-      </main>
-    <script src="./scripts/templates/photographer.js"></script>
-    <script src="./scripts/pages/index.js"></script>
+      <!-- Section des photographes (remplie dynamiquement en JS) -->
+      <div class="photographer_section"></div>
+    </main>
+
+    <!-- Scripts JS (modules ES) -->
+    <script type="module" src="./scripts/templates/photographer.js"></script>
+    <script type="module" src="./scripts/pages/index.js"></script>
   </body>
 </html>

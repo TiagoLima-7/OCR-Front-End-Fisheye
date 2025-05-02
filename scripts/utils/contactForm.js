@@ -1,7 +1,7 @@
 let previousActiveElement;
 
 // Gestion de la modale
-function displayModal(photographerName) {
+export function displayModal(photographerName) {
     const modal = document.getElementById('contact_modal');
     modal.hidden = false;
     modal.setAttribute('aria-hidden', 'false');
@@ -20,6 +20,9 @@ function closeModal() {
     previousActiveElement.focus();
     modal.removeEventListener('keydown', trapFocus);
 }
+
+document.querySelector('.contact_button').addEventListener('click', displayModal);
+document.querySelector('.close-button').addEventListener('click', closeModal);
 
 function trapFocus(e) {
     if (e.key === 'Escape') closeModal();

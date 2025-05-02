@@ -1,12 +1,12 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <title>Fisheye - Photographe</title>
   </head>
   <body>
@@ -17,39 +17,17 @@
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-      </div>
-      <div class="photographer-pricetag"></div>
-    </main> -->
-    <!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Fisheye - Photographe</title>
-  </head>
-  <body>
-    <header>
-      <a href="./index.html">
-          <img src="assets/images/logo.png" class="logo" alt="Logo Fisheye" />
-      </a>
-    </header>
-    <main id="main">
-      <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <button class="contact_button">Contactez-moi</button>
       </div>
       <!-- Select de tri -->
       <div class="sort-container">
         <label for="sort-select">Trier par</label>
         <select id="sort-select" aria-label="Trier la galerie">
           <option value="popularity">Popularité</option>
-          <hr>
+          <!-- <hr> -->
+          <!-- <option disabled class="disabled-option"></option> -->
           <option value="date">Date</option>
-          <hr>
+          <!-- <hr> -->
           <option value="title">Titre</option>
         </select>
       </div>
@@ -64,7 +42,8 @@
                   <h2 id="modalTitle">Contactez-moi</h2>
                   <h2 id="modalPhotographerName" aria-live="polite"></h2>
               </div>
-              <button class="close-button" onclick="closeModal()" aria-label="Fermer la fenêtre de contact">
+              <button class="close-button" aria-label="Fermer la fenêtre de contact">
+              <!-- <button class="close-button" onclick="closeModal()" aria-label="Fermer la fenêtre de contact"> -->
                   <img src="assets/icons/close.svg" alt="">
               </button>
           </header>
@@ -129,9 +108,9 @@
       <button class="lightbox__next" aria-label="Image suivante">&#10095;</button>
     </div>
 
-    <script src="./scripts/templates/photographer.js"></script>
-    <script src="./scripts/pages/photographer.js"></script>
-    <script src="./scripts/utils/contactForm.js"></script>
+    <script type="module" src="./scripts/templates/photographer.js"></script>
+    <script type="module" src="./scripts/pages/photographer.js"></script>
+    <script type="module" src="./scripts/utils/contactForm.js"></script>
     <script src="./scripts/utils/lightbox.js"></script>
   </body>
 </html>

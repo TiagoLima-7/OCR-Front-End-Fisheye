@@ -1,153 +1,23 @@
-// const params = new URLSearchParams(window.location.search);
-// const photographerID = parseInt(params.get('id'));
-// let currentPhotographer;
+/**
+ * Page photographe - Gestion de l'affichage d'un profil de photographe et de sa galerie
+ * Importe les dépendances nécessaires
+ */
+import { PhotographerFactory } from '../templates/photographer.js';
+import { displayModal } from '../utils/contactForm.js';
 
-// async function getData() {
-//     try {
-//         const response = await fetch('./data/photographers.json');
-//         return await response.json();
-//     } catch (error) {
-//         console.error("Erreur de chargement des données :", error);
-//         return { photographers: [], media: [] };
-//     }
-// }
-
-// async function displayPhotographerPage() {
-//     const { photographers, media } = await getData();
-//     const photographer = photographers.find(p => p.id === photographerID);
-
-//     if (!photographer) {
-//         document.querySelector('main').innerHTML = `<div class="error">Photographe non trouvé</div>`;
-//         return;
-//     }
-
-//     currentPhotographer = PhotographerFactory(photographer);
-//     const header = document.querySelector('.photograph-header');
-//     const contactButton = header.querySelector('.contact_button');
-
-//     // Modification du bouton
-//     contactButton.onclick = () => displayModal(currentPhotographer.getName());
-
-//     // Affichage du header
-//     header.insertBefore(
-//         currentPhotographer.createProfileHeaderDOM(), 
-//         contactButton
-//     );
-
-//     // Affichage de la photo de profil
-//     contactButton.insertAdjacentElement(
-//         'afterend', 
-//         currentPhotographer.createProfilePictureDOM()
-//     );
-
-//     // Création et affichage de la galerie
-//     const photographerMedias = media.filter(m => m.photographerId === photographerID);
-//     const gallery = currentPhotographer.createGallery(photographerMedias);
-//     document.querySelector('main').appendChild(gallery);
-//      // ---- Ajout de la somme des likes et du prix journalier ----
-//      const totalLikes = photographerMedias.reduce((sum, media) => sum + (media.likes || 0), 0);
-//      const pricePerDay = photographer.price;
- 
-//      const pricetagDiv = document.querySelector('.photographer-pricetag');
-//      pricetagDiv.innerHTML = `
-//          <div class="pricetag-content">
-//              <span class="total-likes"">
-//                  <span id="total-likes">${totalLikes}</span> <span aria-label="likes"><i class="fa-solid fa-heart"></i></span>
-//              </span>
-//              <span class="price-per-day">${pricePerDay}€ / jour</span>
-//          </div>
-//          `;
-
-//          // Configuration des likes interactifs
-//          setupLikes();
-
-//          function setupLikes() {
-//             // Set pour mémoriser les médias déjà likés (empêche double like)
-//             const likedIndexes = new Set();
-        
-//             // Récupération de tous les éléments likes
-//             const likeElements = document.querySelectorAll('.media-card .likes');
-        
-//             // Fonction pour recalculer et mettre à jour le total des likes affiché
-//             function updateTotalLikes() {
-//                 let total = 0;
-//                 document.querySelectorAll('.media-card .likes').forEach(likesEl => {
-//                     // Le nombre est dans le premier noeud texte de <p class="likes">
-//                     const countText = likesEl.childNodes[0].textContent.trim();
-//                     const count = parseInt(countText, 10);
-//                     total += isNaN(count) ? 0 : count;
-//                 });
-//                 const totalLikesSpan = document.getElementById('total-likes');
-//                 if (totalLikesSpan) {
-//                     totalLikesSpan.textContent = total;
-//                 }
-//             }
-        
-//             likeElements.forEach((likeEl, idx) => {
-//                 const heartSpan = likeEl.querySelector('span');
-//                 if (!heartSpan) return;
-        
-//                 const heartEmpty = heartSpan.querySelector('.fa-regular.fa-heart');
-//                 const heartFull = heartSpan.querySelector('.fa-solid.fa-heart');
-        
-//                 if (!heartEmpty || !heartFull) return;
-        
-//                 // Par défaut, cœur plein caché
-//                 heartFull.style.display = 'none';
-        
-//                 // Rendre le span focusable et accessible comme bouton
-//                 heartSpan.setAttribute('tabindex', '0');
-//                 heartSpan.setAttribute('role', 'button');
-//                 heartSpan.setAttribute('aria-label', 'Aimer ce média');
-//                 heartSpan.setAttribute('aria-pressed', 'false');
-        
-//                 function like() {
-//                     if (likedIndexes.has(idx)) return; // déjà liké, on bloque
-        
-//                     // Récupérer le nombre actuel de likes
-//                     const countNode = likeEl.childNodes[0];
-//                     let count = parseInt(countNode.textContent.trim(), 10);
-//                     if (isNaN(count)) count = 0;
-//                     count++;
-//                     countNode.textContent = count + ' ';
-        
-//                     // Afficher le cœur plein, cacher le vide
-//                     heartEmpty.style.display = 'none';
-//                     heartFull.style.display = '';
-        
-//                     // Mise à jour aria
-//                     heartSpan.setAttribute('aria-pressed', 'true');
-        
-//                     // Mémoriser que ce média est liké
-//                     likedIndexes.add(idx);
-        
-//                     // Mettre à jour le total des likes
-//                     updateTotalLikes();
-//                 }
-        
-//                 // Clic souris
-//                 heartSpan.addEventListener('click', like);
-        
-//                 // Clavier : Entrée ou Espace déclenche le like
-//                 heartSpan.addEventListener('keydown', function(e) {
-//                     if (e.key === 'Enter' || e.key === ' ') {
-//                         like();
-//                         e.preventDefault();
-//                     }
-//                 });
-//             });
-//         }
-// }
-
-// document.addEventListener('DOMContentLoaded', displayPhotographerPage);
-
-
+// Récupération de l'ID du photographe depuis l'URL
 const params = new URLSearchParams(window.location.search);
 const photographerID = parseInt(params.get('id'));
-let currentPhotographer;
-let photographerMedias = [];
-let currentSort = 'popularity';
 
+// Variables globales
+let currentPhotographer;            // Stocke l'instance du photographe actuel
+let photographerMedias = [];        // Stocke tous les médias du photographe
+let currentSort = 'popularity';     // Critère de tri par défaut
+
+/**
+ * Récupère les données des photographes et médias depuis le fichier JSON
+ * @returns {Promise<Object>} Les données des photographes et médias
+ */
 async function getData() {
     try {
         const response = await fetch('./data/photographers.json');
@@ -158,6 +28,12 @@ async function getData() {
     }
 }
 
+/**
+ * Trie les médias selon le critère choisi
+ * @param {Array} medias - Liste des médias à trier
+ * @param {string} sortBy - Critère de tri ('popularity', 'date', 'title')
+ * @returns {Array} Liste des médias triés
+ */
 function sortMedias(medias, sortBy) {
     // Tri dynamique selon le critère choisi
     switch (sortBy) {
@@ -172,6 +48,9 @@ function sortMedias(medias, sortBy) {
     }
 }
 
+/**
+ * Affiche la galerie de médias triée selon le critère actuel
+ */
 function renderGallery() {
     // Supprimer l'ancienne galerie si elle existe
     const oldGallery = document.querySelector('.gallery-grid');
@@ -188,20 +67,29 @@ function renderGallery() {
     setupLikes();
 }
 
+/**
+ * Affiche la page complète du photographe
+ */
 async function displayPhotographerPage() {
+    // Récupération des données
     const { photographers, media } = await getData();
     const photographer = photographers.find(p => p.id === photographerID);
 
+    // Gestion d'erreur si le photographe n'existe pas
     if (!photographer) {
         document.querySelector('main').innerHTML = `<div class="error">Photographe non trouvé</div>`;
         return;
     }
 
+    // Création de l'instance du photographe
     currentPhotographer = PhotographerFactory(photographer);
+    
+    // Configuration de l'en-tête du profil
     const header = document.querySelector('.photograph-header');
     const contactButton = header.querySelector('.contact_button');
     contactButton.onclick = () => displayModal(currentPhotographer.getName());
 
+    // Insertion des éléments du profil
     header.insertBefore(
         currentPhotographer.createProfileHeaderDOM(),
         contactButton
@@ -231,6 +119,9 @@ async function displayPhotographerPage() {
     }
 }
 
+/**
+ * Met à jour l'affichage du nombre total de likes et du prix journalier
+ */
 function updatePriceAndLikes() {
     // Calcul du total des likes sur les médias actuellement affichés
     const totalLikes = Array.from(document.querySelectorAll('.media-card .likes')).reduce((sum, likesEl) => {
@@ -242,6 +133,7 @@ function updatePriceAndLikes() {
     // Récupérer le prix journalier du photographe
     const pricePerDay = currentPhotographer.price || '';
 
+    // Mise à jour de l'affichage
     const pricetagDiv = document.querySelector('.photographer-pricetag');
     pricetagDiv.innerHTML = `
         <div class="pricetag-content">
@@ -253,10 +145,17 @@ function updatePriceAndLikes() {
     `;
 }
 
+/**
+ * Configure les interactions de like sur les médias
+ */
 function setupLikes() {
+    // Set pour mémoriser les médias déjà likés
     const likedIndexes = new Set();
     const likeElements = document.querySelectorAll('.media-card .likes');
 
+    /**
+     * Met à jour le compteur total de likes
+     */
     function updateTotalLikes() {
         let total = 0;
         document.querySelectorAll('.media-card .likes').forEach(likesEl => {
@@ -270,6 +169,7 @@ function setupLikes() {
         }
     }
 
+    // Configuration de chaque élément de like
     likeElements.forEach((likeEl, idx) => {
         const heartSpan = likeEl.querySelector('span');
         if (!heartSpan) return;
@@ -279,30 +179,39 @@ function setupLikes() {
 
         if (!heartEmpty || !heartFull) return;
 
+        // Par défaut, cœur plein caché
         heartFull.style.display = 'none';
 
+        // Configuration pour l'accessibilité
         heartSpan.setAttribute('tabindex', '0');
         heartSpan.setAttribute('role', 'button');
         heartSpan.setAttribute('aria-label', 'Aimer ce média');
         heartSpan.setAttribute('aria-pressed', 'false');
 
+        /**
+         * Fonction pour ajouter un like
+         */
         function like() {
             if (likedIndexes.has(idx)) return;
 
+            // Incrémenter le compteur
             const countNode = likeEl.childNodes[0];
             let count = parseInt(countNode.textContent.trim(), 10);
             if (isNaN(count)) count = 0;
             count++;
             countNode.textContent = count + ' ';
 
+            // Afficher le cœur plein
             heartEmpty.style.display = 'none';
             heartFull.style.display = '';
 
+            // Mise à jour de l'état
             heartSpan.setAttribute('aria-pressed', 'true');
             likedIndexes.add(idx);
             updateTotalLikes();
         }
 
+        // Événements pour le like
         heartSpan.addEventListener('click', like);
         heartSpan.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -313,4 +222,5 @@ function setupLikes() {
     });
 }
 
+// Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', displayPhotographerPage);
