@@ -7,7 +7,7 @@ import { displayModal } from '../utils/contactForm.js';
 
 // Récupération de l'ID du photographe depuis l'URL
 const params = new URLSearchParams(window.location.search);
-const photographerID = parseInt(params.get('id'));
+const photographerID = parseInt(params.get('id'), 10);
 
 // Variables globales
 let currentPhotographer;            // Stocke l'instance du photographe actuel
@@ -35,7 +35,6 @@ async function getData() {
  * @returns {Array} Liste des médias triés
  */
 function sortMedias(medias, sortBy) {
-    // Tri dynamique selon le critère choisi
     switch (sortBy) {
         case 'popularity':
             return [...medias].sort((a, b) => (b.likes || 0) - (a.likes || 0));
@@ -59,7 +58,7 @@ function renderGallery() {
     // Trier les médias selon le critère actuel
     const sortedMedias = sortMedias(photographerMedias, currentSort);
 
-    // Créer et afficher la galerie triée
+    // Créer et afficher la galerie triée via la méthode du photographe
     const gallery = currentPhotographer.createGallery(sortedMedias);
     document.querySelector('main').appendChild(gallery);
 
@@ -81,9 +80,9 @@ async function displayPhotographerPage() {
         return;
     }
 
-    // Création de l'instance du photographe
-    currentPhotographer = PhotographerFactory(photographer);
-    
+    // Création de l'instance du photographe via la factory (méthode statique)
+    currentPhotographer = PhotographerFactory.createPhotographer(photographer);
+
     // Configuration de l'en-tête du profil
     const header = document.querySelector('.photograph-header');
     const contactButton = header.querySelector('.contact_button');

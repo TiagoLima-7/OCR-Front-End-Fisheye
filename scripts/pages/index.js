@@ -15,8 +15,9 @@ async function displayData(photographers) {
     const photographersSection = document.querySelector(".photographer_section");
 
     photographers.forEach(photographer => {
-        const photographerFactory = PhotographerFactory(photographer);
-        const userCardDOM = photographerFactory.createUserCardDOM();
+        // Utilisation de la méthode statique de la factory
+        const photographerInstance = PhotographerFactory.createPhotographer(photographer);
+        const userCardDOM = photographerInstance.createUserCardDOM();
         photographersSection.appendChild(userCardDOM);
     });
 }
