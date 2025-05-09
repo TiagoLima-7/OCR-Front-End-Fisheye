@@ -43,7 +43,8 @@ body {
 .photo-container img {
   height: 200px;
   width: 200px;
-  scale: 1.5;
+  scale: 1.4;
+  object-fit: cover;
 }
 
 .photographer-info {

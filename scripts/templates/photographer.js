@@ -157,8 +157,9 @@ class Photographer {
 
         const img = document.createElement('img');
         img.src = this.picture;
-        img.alt = `${this.name}`;
-        img.setAttribute('aria-label', `${this.name}`);
+        // img.alt = `${this.name}`;
+        img.alt = ``;
+        // img.setAttribute('aria-label', `${this.name}`);
 
         // Nom du photographe
         const h2 = document.createElement('h2');

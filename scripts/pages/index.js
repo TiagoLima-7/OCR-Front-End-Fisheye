@@ -29,7 +29,7 @@ async function displayData(photographers) {
     // Sélectionne la section qui accueillera les cartes photographes
     const photographersSection = document.querySelector(".photographer_section");
     // Ajoute le rôle ARIA "list" pour l'accessibilité (screen readers)
-    photographersSection.setAttribute('role', 'list');
+    // photographersSection.setAttribute('role', 'list');
 
     // Pour chaque photographe, on génère et insère sa carte
     photographers.forEach(photographer => {
@@ -37,8 +37,8 @@ async function displayData(photographers) {
         const photographerInstance = PhotographerFactory.createPhotographer(photographer);
         // Génère le DOM de la carte photographe
         const userCardDOM = photographerInstance.createUserCardDOM();
-        // Ajoute le rôle ARIA "listitem" pour chaque carte (accessibilité)
-        userCardDOM.setAttribute('role', 'listitem');
+        // // Ajoute le rôle ARIA "listitem" pour chaque carte (accessibilité)
+        // userCardDOM.setAttribute('role', 'listitem');
         // Ajoute la carte à la section
         photographersSection.appendChild(userCardDOM);
     });
