@@ -245,6 +245,7 @@ function setupCustomSelect() {
         // listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
         optionsContainer.setAttribute('aria-activedescendant', options[currentIndex].id);
         options.forEach((opt, i) => {
+            if (i !==0)
             opt.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
         });
     }
