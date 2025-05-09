@@ -229,6 +229,8 @@ function setupCustomSelect() {
     const optionsContainer = listbox.querySelector('.custom-select__options'); // Le menu déroulant contenant les options
     const options = Array.from(optionsContainer.querySelectorAll('.custom-option')); // Tableau de toutes les options
     const selectedText = btnSelected.querySelector('#sort-selected-text'); // Le span qui affiche le texte sélectionné
+    const chevronIcon = listbox.querySelector('.chevron .fa-solid'); //Le span qui affiche le chevron
+
 
     // Trouve l'index de l'option sélectionnée par défaut (aria-selected="true")
     let currentIndex = options.findIndex(opt => opt.getAttribute('aria-selected') === 'true');
@@ -260,6 +262,9 @@ function setupCustomSelect() {
         optionsContainer.setAttribute('tabindex', '0');
         syncAria();
         options[currentIndex].focus();
+        chevronIcon.classList.remove('fa-chevron-down');
+        chevronIcon.classList.add('fa-chevron-up');
+
     }
 
     /**
@@ -275,6 +280,9 @@ function setupCustomSelect() {
         btnSelected.setAttribute('aria-expanded', 'false');
         optionsContainer.setAttribute('tabindex', '-1');
         if (restoreFocus) btnSelected.focus();
+        chevronIcon.classList.remove('fa-chevron-up');
+        chevronIcon.classList.add('fa-chevron-down');
+
     }
 
     /**

@@ -312,9 +312,9 @@ form textarea.invalid {
   margin-top: 15px;
 }
 
-.lightbox__close:focus,
+/* .lightbox__close:focus,
 .lightbox__prev:focus,
-.lightbox__next:focus { outline: 2px solid var(--color-bg-white); }
+.lightbox__next:focus { outline: 2px solid var(--color-primary); } */
 
 .fa-regular.fa-heart {
   color: var(--color-primary);
@@ -358,7 +358,7 @@ form textarea.invalid {
   width: 100%;
   text-align: left;
   background: var(--color-primary);
-  border: 1px solid var(--color-grey-border);
+  /* border: 1px solid var(--color-grey-border); */
   border-radius: 5px;
   padding: 8px 32px 8px 12px;
   cursor: pointer;
@@ -383,7 +383,6 @@ form textarea.invalid {
   right: 0;
   z-index: 10;
   background: var(--color-bg-white);
-  border: 1px solid var(--color-grey-border);
   border-radius: 0 0 4px 4px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   margin-top: 2px;
@@ -401,9 +400,16 @@ form textarea.invalid {
   border-radius: 5px;
 }
 
+.custom-option:focus{
+  outline: 2px solid var(--color-primary);
+  outline-offset: 5px;
+  background: #FFF;
+  color: var(--color-primary);
+}
+
 .separateur {
   height: 1px;
-  background: var(--color-grey-separator);
+  background: var(--color-bg-white);
   width: 90%;
   align-self: center;
 }
@@ -431,12 +437,12 @@ form textarea.invalid {
   }
 }
 
-.custom-option[role="option"]:focus {
-  outline: 2px solid var(--color-blue-focus);
+/* .custom-option[role="option"]:focus {
+  outline: 2px solid var(--color-primary);
   outline-offset: -2px;
-}
+} */
 
-.custom-select__selected:focus {
-  outline: 2px solid var(--color-blue-focus);
+/* .custom-select__selected:focus {
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-}
+} */

@@ -9,8 +9,7 @@
     --color-bg-white: #FFFFFF;     /* Blanc pur */
     --color-grey-dark: #312E2E;    /* Gris foncé pour labels */
     --color-grey-medium: #525252;  /* Gris pour tagline et texte */
-    --color-grey-border: #aaa;     /* Gris clair pour bordures */
-    --color-grey-separator: #ddd;  /* Gris pour séparateurs */
+    /*--color-grey-border: #aaa;*/     /* Gris clair pour bordures */
     --color-blue-focus: #005fcc;   /* Bleu focus accessibilité */
 }
 
@@ -19,6 +18,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "DM Sans", sans-serif;
+}
+
+*:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 5px;
 }
 
 body {
@@ -33,6 +37,8 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 90px;
+    max-width: 1440px;
+    padding: 0 100px;
 }
 
 h1 {
@@ -42,7 +48,6 @@ h1 {
 
 .logo {
     height: 50px;
-    margin-left: 100px;
 }
 
 .photographer_section {
