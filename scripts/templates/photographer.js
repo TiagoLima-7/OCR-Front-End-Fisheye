@@ -75,10 +75,11 @@ class MediaVideo {
         mediaCard.setAttribute('role', 'listitem');
         mediaCard.setAttribute('aria-label', `${this.data.title}, vidéo, ${this.data.likes} likes`);
 
-        // Structure HTML de la carte vidéo
+        // Structure HTML de la carte vidéo avec piste de sous-titres
         mediaCard.innerHTML = `
-            <video width="350" height="350" data-index="${this.index}" aria-label="${this.data.title}">
+            <video width="350" height="350" data-index="${this.index}" aria-label="${this.data.title}" controls>
                 <source src="assets/images/${this.photographerFolder}/${this.data.video}" type="video/mp4">
+                <track kind="captions" src="assets/images/${this.photographerFolder}/${this.data.captions || 'captions.vtt'}" srclang="fr" label="Français" default>
                 Votre navigateur ne supporte pas la vidéo.
             </video>
             <div class="media-info">

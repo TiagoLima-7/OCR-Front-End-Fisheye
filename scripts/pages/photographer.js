@@ -130,7 +130,7 @@ function updatePriceAndLikes() {
     pricetagDiv.innerHTML = `
         <div class="pricetag-content">
             <span class="total-likes">
-                <span id="total-likes">${totalLikes}</span> <span aria-label="likes"><i class="fa-solid fa-heart"></i></span>
+                <span id="total-likes">${totalLikes}</span> <span><i class="fa-solid fa-heart"></i></span>
             </span>
             <span class="price-per-day">${pricePerDay}€ / jour</span>
         </div>

@@ -21,63 +21,61 @@
       </div>
 
       <!-- Tri de la galerie -->
-<div class="sort-container">
-  <span id="sort-label">Trier par</span>
-  <div class="custom-select" id="sort-select">
-    <button
-      type="button"
-      class="custom-select__selected"
-      id="sort-selected"
-      role="button"
-      aria-haspopup="listbox"
-      aria-expanded="false"
-      aria-labelledby="sort-label sort-selected-text"
-      aria-controls="sort-options"
-    >
-      <span id="sort-selected-text">Popularité</span>
-      <span class="chevron"><span class="fa-solid fa-chevron-down"></span></span>
-    </button>
-    <div
-      class="custom-select__options"
-      id="sort-options"
-      role="listbox"
-      aria-labelledby="sort-label"
-      aria-activedescendant="sort-option-popularity"
-      tabindex="-1"
-      hidden
-    >
-      <div
-        id="sort-option-popularity"
-        class="custom-option"
-        role="option"
-        aria-selected="true"
-        data-value="popularity"
-        aria-label="Trier par popularité"
-        tabindex="-1"
-      >Popularité</div>
-      <div class="separateur" aria-hidden="true"></div>
-      <div
-        id="sort-option-date"
-        class="custom-option"
-        role="option"
-        aria-selected="false"
-        data-value="date"
-        aria-label="Trier par date"
-        tabindex="-1"
-      >Date</div>
-      <div class="separateur" aria-hidden="true"></div>
-      <div
-        id="sort-option-title"
-        class="custom-option"
-        role="option"
-        aria-selected="false"
-        data-value="title"
-        aria-label="Trier par titre"
-        tabindex="-1"
-      >Titre</div>
-    </div>
-  </div>
-</div>
+      <div class="sort-container">
+        <span id="sort-label">Trier par</span>
+        <div class="custom-select" id="sort-select">
+          <button
+            type="button"
+            class="custom-select__selected"
+            id="sort-selected"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-labelledby="sort-label sort-selected-text"
+            aria-controls="sort-options"
+            aria-activedescendant="sort-option-popularity"
+          >
+            <span id="sort-selected-text">Popularité</span>
+            <span class="chevron"><span class="fa-solid fa-chevron-down"></span></span>
+          </button>
+          <div
+            class="custom-select__options"
+            id="sort-options"
+            role="listbox"
+            aria-labelledby="sort-label"
+            tabindex="-1"
+            hidden
+          >
+            <div
+              id="sort-option-popularity"
+              class="custom-option"
+              role="option"
+              aria-selected="true"
+              data-value="popularity"
+              tabindex="-1"
+            >Popularité</div>
+            <div class="separateur" aria-hidden="true"></div>
+            <div
+              id="sort-option-date"
+              class="custom-option"
+              role="option"
+              aria-selected="false"
+              data-value="date"
+              tabindex="-1"
+            >Date</div>
+            <div class="separateur" aria-hidden="true"></div>
+            <div
+              id="sort-option-title"
+              class="custom-option"
+              role="option"
+              aria-selected="false"
+              data-value="title"
+              tabindex="-1"
+            >Titre</div>
+          </div>
+        </div>
+      </div>
+      
 
       
       

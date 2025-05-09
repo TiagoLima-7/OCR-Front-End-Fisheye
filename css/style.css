@@ -75,6 +75,7 @@ h1 {
     height: 200px;
     border-radius: 50%;
     overflow: hidden;
+    margin: 0 auto 20px;
 }
 
 .photographer_section article h2 {
