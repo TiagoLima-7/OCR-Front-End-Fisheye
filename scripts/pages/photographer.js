@@ -242,7 +242,7 @@ function setupCustomSelect() {
      * - aria-selected sur chaque option
      */
     function syncAria() {
-        listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
+        // listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
         optionsContainer.setAttribute('aria-activedescendant', options[currentIndex].id);
         options.forEach((opt, i) => {
             opt.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
