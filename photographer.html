@@ -12,38 +12,89 @@
   <body>
     <header>
       <a href="./index.html">
-          <img src="assets/images/logo.png" class="logo" alt="Logo Fisheye" />
+          <img src="assets/images/logo.png" class="logo" alt="Fisheye Home Page" />
       </a>
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button">Contactez-moi</button>
+        <button class="contact_button" aria-label="Contact me">Contactez-moi</button>
       </div>
-      <!-- Select de tri --> 
-      <!-- changer pour une div au lieu d'un select -->
-      <div class="sort-container">
-        <label for="sort-select">Trier par</label>
-        <select id="sort-select" aria-label="Trier la galerie">
-          <option value="popularity">Popularité</option>
-          <!-- <hr> -->
-          <!-- <option disabled class="disabled-option"></option> -->
-          <option value="date">Date</option>
-          <!-- <hr> -->
-          <option value="title">Titre</option>
-        </select>
-      </div>
+
+      <!-- Tri de la galerie -->
+<div class="sort-container">
+  <span id="sort-label">Trier par</span>
+  <div class="custom-select" id="sort-select">
+    <button
+      type="button"
+      class="custom-select__selected"
+      id="sort-selected"
+      role="button"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+      aria-labelledby="sort-label sort-selected-text"
+      aria-controls="sort-options"
+    >
+      <span id="sort-selected-text">Popularité</span>
+      <span class="chevron"><i class="fa-solid fa-chevron-down"></i></span>
+    </button>
+    <div
+      class="custom-select__options"
+      id="sort-options"
+      role="listbox"
+      aria-labelledby="sort-label"
+      aria-activedescendant="sort-option-popularity"
+      tabindex="-1"
+      hidden
+    >
+      <div
+        id="sort-option-popularity"
+        class="custom-option"
+        role="option"
+        aria-selected="true"
+        data-value="popularity"
+        aria-label="Trier par popularité"
+        tabindex="-1"
+      >Popularité</div>
+      <div class="separateur" aria-hidden="true"></div>
+      <div
+        id="sort-option-date"
+        class="custom-option"
+        role="option"
+        aria-selected="false"
+        data-value="date"
+        aria-label="Trier par date"
+        tabindex="-1"
+      >Date</div>
+      <div class="separateur" aria-hidden="true"></div>
+      <div
+        id="sort-option-title"
+        class="custom-option"
+        role="option"
+        aria-selected="false"
+        data-value="title"
+        aria-label="Trier par titre"
+        tabindex="-1"
+      >Titre</div>
+    </div>
+  </div>
+</div>
+
+      
+      
       <div class="photographer-pricetag"></div>
     </main>
 
+
+    <!-- Formulaire de contact -->
     <div id="contact_modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
       <div class="modal-backdrop"></div>
       <div class="modal" role="document">
           <header>
               <div>
-                  <h2 id="modalTitle">Contactez-moi</h2>
-                  <h2 id="modalPhotographerName" aria-live="polite"></h2>
+                  <!-- <h2 id="modalTitle">Contactez-moi</h2> -->
+                  <h1 id="modalPhotographerName" aria-live="polite"></h1>
               </div>
-              <button class="close-button" aria-label="Fermer la fenêtre de contact">
+              <button class="close-button" aria-label="Close contact form">
               <!-- <button class="close-button" onclick="closeModal()" aria-label="Fermer la fenêtre de contact"> -->
                   <img src="assets/icons/close.svg" alt="">
               </button>
@@ -58,6 +109,7 @@
                       required
                       autocomplete="given-name"
                       aria-required="true"
+                      aria-label="First name"
                   >
                   <span class="error-message" aria-live="polite"></span>
               </div>  
@@ -70,6 +122,7 @@
                       required
                       autocomplete="family-name"
                       aria-required="true"
+                      aria-label="Last name"
                   >
                   <span class="error-message" aria-live="polite"></span>
               </div>
@@ -82,6 +135,7 @@
                       required
                       autocomplete="email"
                       aria-required="true"
+                      aria-label="Email adresse"
                   >
                   <span class="error-message" aria-live="polite"></span>
               </div>
@@ -92,21 +146,22 @@
                       name="message" 
                       required
                       aria-required="true"
+                      aria-label="Your message"
                       rows="5"
                   ></textarea>
                   <span class="error-message" aria-live="polite"></span>
               </div>
-              <button type="submit" class="contact_button">Envoyer</button>
+              <button type="submit" class="contact_button" aria-label="Send">Envoyer</button>
           </form>
       </div>
     </div>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox" aria-modal="true" role="dialog" hidden>
-      <button class="lightbox__close" aria-label="Fermer la lightbox">&times;</button>
-      <button class="lightbox__prev" aria-label="Image précédente">&#10094;</button>
+    <div id="lightbox" class="lightbox" aria-modal="true" role="dialog" hidden aria-label="Image closeup view">
+      <button class="lightbox__close" aria-label="Close dialog">&times;</button>
+      <button class="lightbox__prev" aria-label="Previous image">&#10094;</button>
       <div class="lightbox__content" tabindex="0"></div>
-      <button class="lightbox__next" aria-label="Image suivante">&#10095;</button>
+      <button class="lightbox__next" aria-label="Next image">&#10095;</button>
     </div>
 
     <script type="module" src="./scripts/templates/photographer.js"></script>

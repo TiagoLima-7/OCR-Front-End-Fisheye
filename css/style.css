@@ -1,13 +1,27 @@
 @import url("photographer.css");
 
+:root {
+    /* Palette principale */
+    --color-primary: #901C1C;      /* Rouge principal */
+    --color-secondary: #D3573C;    /* Orange/rouge pour titres */
+    --color-accent: #DB8876;       /* Beige/orange clair pour fond modal/pricetag */
+    --color-bg-light: #FAFAFA;     /* Fond très clair */
+    --color-bg-white: #FFFFFF;     /* Blanc pur */
+    --color-grey-dark: #312E2E;    /* Gris foncé pour labels */
+    --color-grey-medium: #525252;  /* Gris pour tagline et texte */
+    --color-grey-border: #aaa;     /* Gris clair pour bordures */
+    --color-grey-separator: #ddd;  /* Gris pour séparateurs */
+    --color-blue-focus: #005fcc;   /* Bleu focus accessibilité */
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "DM Sans", sans-serif;
 }
 
 body {
-    font-family: "DM Sans", sans-serif;
     margin: auto;
     max-width: 1440px;
 }
