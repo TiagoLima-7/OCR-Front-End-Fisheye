@@ -245,7 +245,6 @@ function setupCustomSelect() {
         // listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
         optionsContainer.setAttribute('aria-activedescendant', options[currentIndex].id);
         options.forEach((opt, i) => {
-            if (i !==0)
             opt.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
         });
     }
@@ -275,9 +274,11 @@ function setupCustomSelect() {
      * - Restaure le focus sur le bouton si besoin
      * @param {boolean} restoreFocus - Si vrai, remet le focus sur le bouton
      */
-    function closeDropdown(restoreFocus = true) {
-        optionsContainer.hidden = true;
+    function closeDropdown(restoreFocus = true, callFrom = true) {
+        if(callFrom)
         listbox.setAttribute('aria-expanded', 'false');
+        
+        optionsContainer.hidden = true;
         btnSelected.setAttribute('aria-expanded', 'false');
         optionsContainer.setAttribute('tabindex', '-1');
         if (restoreFocus) btnSelected.focus();
@@ -300,7 +301,7 @@ function setupCustomSelect() {
         currentIndex = index;
         selectedText.textContent = options[index].textContent;
         syncAria();
-        closeDropdown(restoreFocus);
+        closeDropdown(restoreFocus, false);
 
         // Déclenche un événement personnalisé pour signaler le changement de tri
         if (fireEvent) {
@@ -379,11 +380,16 @@ function setupCustomSelect() {
         currentSort = e.detail.value;
         renderGallery();
         updatePriceAndLikes();
+        setupCustomSelect();
         // console.log("Tri sélectionné :", e.detail.value);
     });
 
     // Initialisation : sélectionne l'option par défaut sans déclencher d'événement
     selectOption(currentIndex, false, false);
+
+
+// listbox.removeAttribute("aria-expanded");
+
 }
 
 
@@ -392,3 +398,4 @@ function setupCustomSelect() {
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', displayPhotographerPage);
+

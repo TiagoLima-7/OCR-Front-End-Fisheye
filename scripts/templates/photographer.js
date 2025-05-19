@@ -77,7 +77,7 @@ class MediaVideo {
 
         // Structure HTML de la carte vidéo avec piste de sous-titres
         mediaCard.innerHTML = `
-            <video width="350" height="350" data-index="${this.index}" aria-label="${this.data.title}" controls>
+            <video width="350" height="350" data-index="${this.index}" aria-label="${this.data.title}">
                 <source src="assets/images/${this.photographerFolder}/${this.data.video}" type="video/mp4">
                 <track kind="captions" src="assets/images/${this.photographerFolder}/${this.data.captions || 'captions.vtt'}" srclang="fr" label="Français" default>
                 Votre navigateur ne supporte pas la vidéo.
