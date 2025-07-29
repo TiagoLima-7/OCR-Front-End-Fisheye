@@ -222,7 +222,202 @@ function setupLikes() {
  * - Met à jour les attributs ARIA pour l'accessibilité
  * - Déclenche un événement personnalisé lors du changement de sélection
  */
+// function setupCustomSelect() {
+
+//     if(modalOpen) return;
+//     // Récupère tous les éléments nécessaires du composant custom select
+//     const listbox = document.getElementById('sort-select'); // Le conteneur principal du faux select
+//     const btnSelected = listbox.querySelector('.custom-select__selected'); // Le bouton qui affiche la valeur sélectionnée
+//     const optionsContainer = listbox.querySelector('.custom-select__options'); // Le menu déroulant contenant les options
+//     const options = Array.from(optionsContainer.querySelectorAll('.custom-option')); // Tableau de toutes les options
+//     const selectedText = btnSelected.querySelector('#sort-selected-text'); // Le span qui affiche le texte sélectionné
+//     const chevronIcon = listbox.querySelector('.chevron .fa-solid'); //Le span qui affiche le chevron
+
+
+//     // Trouve l'index de l'option sélectionnée par défaut (aria-selected="true")
+//     let currentIndex = options.findIndex(opt => opt.getAttribute('aria-selected') === 'true');
+//     if (currentIndex === -1) currentIndex = 0; // Si aucune, sélectionne la première
+
+//     /**
+//      * Synchronise les attributs ARIA pour l'accessibilité :
+//      * - aria-activedescendant sur le listbox et la liste d'options
+//      * - aria-selected sur chaque option
+//      */
+//     function syncAria() {
+//         // listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
+//         optionsContainer.setAttribute('aria-activedescendant', options[currentIndex].id);
+//         options.forEach((opt, i) => {
+//             opt.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+//         });
+//     }
+
+//     /**
+//      * Ouvre le menu déroulant :
+//      * - Affiche la liste
+//      * - Met à jour les attributs aria-expanded
+//      * - Met le focus sur l'option active
+//      */
+//     function openDropdown() {
+//         optionsContainer.hidden = false;
+//         listbox.setAttribute('aria-expanded', 'true');
+//         btnSelected.setAttribute('aria-expanded', 'true');
+//         optionsContainer.setAttribute('tabindex', '0');
+//         syncAria();
+//         options[currentIndex].focus();
+//         chevronIcon.classList.remove('fa-chevron-down');
+//         chevronIcon.classList.add('fa-chevron-up');
+
+//     }
+
+//     /**
+//      * Ferme le menu déroulant :
+//      * - Cache la liste
+//      * - Met à jour les attributs aria-expanded
+//      * - Restaure le focus sur le bouton si besoin
+//      * @param {boolean} restoreFocus - Si vrai, remet le focus sur le bouton
+//      */
+//     function closeDropdown(restoreFocus = true, callFrom = true) {
+//         if(callFrom)
+//         listbox.setAttribute('aria-expanded', 'false');
+        
+//         optionsContainer.hidden = true;
+//         btnSelected.setAttribute('aria-expanded', 'false');
+//         optionsContainer.setAttribute('tabindex', '-1');
+//         if (restoreFocus) btnSelected.focus();
+//         chevronIcon.classList.remove('fa-chevron-up');
+//         chevronIcon.classList.add('fa-chevron-down');
+
+//     }
+
+//     /**
+//      * Sélectionne une option :
+//      * - Met à jour le texte affiché
+//      * - Met à jour les attributs ARIA
+//      * - Ferme le menu
+//      * - Déclenche un événement personnalisé si demandé
+//      * @param {number} index - Index de l'option à sélectionner
+//      * @param {boolean} fireEvent - Si vrai, déclenche l'événement "sortChange"
+//      * @param {boolean} restoreFocus - Si vrai, remet le focus sur le bouton
+//      */
+//     function selectOption(index, fireEvent = true, restoreFocus = true) {
+//         currentIndex = index;
+//         selectedText.textContent = options[index].textContent;
+//         syncAria();
+//         closeDropdown(restoreFocus, false);
+
+//         // Déclenche un événement personnalisé pour signaler le changement de tri
+//         if (fireEvent) {
+//             const event = new CustomEvent('sortChange', {
+//                 detail: { value: options[index].dataset.value }
+//             });
+//             listbox.dispatchEvent(event);
+//         }
+//     }
+
+//     // Ouvre ou ferme le menu au clic sur le bouton principal
+//     btnSelected.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         if (optionsContainer.hidden) {
+//             openDropdown();
+//         } else {
+//             closeDropdown();
+//         }
+//     });
+
+//     // Ouvre le menu au clavier (espace, entrée, flèche)
+//     btnSelected.addEventListener('keydown', (e) => {
+//         if (['ArrowDown', 'ArrowUp', ' ', 'Enter'].includes(e.key)) {
+//             e.preventDefault();
+//             openDropdown();
+//         }
+//     });
+
+//     // Navigation clavier dans la liste d'options
+//     optionsContainer.addEventListener('keydown', (e) => {
+//         if (e.key === 'ArrowDown') {
+//             // Flèche bas : passe à l'option suivante
+//             e.preventDefault();
+//             currentIndex = (currentIndex + 1) % options.length;
+//             options[currentIndex].focus();
+//             syncAria();
+//         } else if (e.key === 'ArrowUp') {
+//             // Flèche haut : passe à l'option précédente
+//             e.preventDefault();
+//             currentIndex = (currentIndex - 1 + options.length) % options.length;
+//             options[currentIndex].focus();
+//             syncAria();
+//         } else if (e.key === 'Enter' || e.key === ' ') {
+//             // Entrée ou espace : sélectionne l'option courante
+//             e.preventDefault();
+//             selectOption(currentIndex);
+//         } else if (e.key === 'Escape') {
+//             // Escape : ferme le menu
+//             e.preventDefault();
+//             closeDropdown();
+//         }
+//     });
+
+//     // Sélectionne une option au clic
+//     options.forEach((opt, i) => {
+//         opt.addEventListener('click', (e) => {
+//             e.stopPropagation();
+//             selectOption(i);
+//         });
+//         // Met à jour l'index courant lors du focus (utile pour la navigation clavier)
+//         opt.addEventListener('focus', () => {
+//             currentIndex = i;
+//             syncAria();
+//         });
+//     });
+
+//     // Ferme le menu si clic en dehors du composant
+//     document.addEventListener('click', (e) => {
+//         if (!listbox.contains(e.target)) {
+//             closeDropdown();
+//         }
+//     });
+
+//     // Gère le tri lors du changement de sélection (à adapter selon ta logique métier)
+//     listbox.addEventListener('sortChange', (e) => {
+//         currentSort = e.detail.value;
+//         renderGallery();
+//         updatePriceAndLikes();
+//         setupCustomSelect();
+//         // console.log("Tri sélectionné :", e.detail.value);
+//     });
+
+//     // Initialisation : sélectionne l'option par défaut sans déclencher d'événement
+//     selectOption(currentIndex, false, false);
+
+
+// // listbox.removeAttribute("aria-expanded");
+
+// }
+
 function setupCustomSelect() {
+
+    // Fonction pour savoir si la modale est ouverte (cache ou non)
+    const modal = document.getElementById('contact_modal');
+    function isModalOpen() {
+        return modal && !modal.hidden;
+    }
+
+    // Si modal ouverte, ne pas configurer le tri du tout (optionnel, si setupCustomSelect peut être rappelé souvent)
+    // Commenter cette ligne si vous souhaitez que le tri soit toujours actif visuellement
+    if (isModalOpen()) {
+        // Fermer explicitement le menu déroulant s'il était ouvert (au cas où)
+        const listbox = document.getElementById('sort-select');
+        if(listbox) {
+            const btnSelected = listbox.querySelector('.custom-select__selected');
+            const optionsContainer = listbox.querySelector('.custom-select__options');
+            optionsContainer.hidden = true;
+            listbox.setAttribute('aria-expanded', 'false');
+            btnSelected.setAttribute('aria-expanded', 'false');
+            // Ne pas aller plus loin
+            return;
+        }
+    }
+
     // Récupère tous les éléments nécessaires du composant custom select
     const listbox = document.getElementById('sort-select'); // Le conteneur principal du faux select
     const btnSelected = listbox.querySelector('.custom-select__selected'); // Le bouton qui affiche la valeur sélectionnée
@@ -231,30 +426,17 @@ function setupCustomSelect() {
     const selectedText = btnSelected.querySelector('#sort-selected-text'); // Le span qui affiche le texte sélectionné
     const chevronIcon = listbox.querySelector('.chevron .fa-solid'); //Le span qui affiche le chevron
 
-
     // Trouve l'index de l'option sélectionnée par défaut (aria-selected="true")
     let currentIndex = options.findIndex(opt => opt.getAttribute('aria-selected') === 'true');
     if (currentIndex === -1) currentIndex = 0; // Si aucune, sélectionne la première
 
-    /**
-     * Synchronise les attributs ARIA pour l'accessibilité :
-     * - aria-activedescendant sur le listbox et la liste d'options
-     * - aria-selected sur chaque option
-     */
     function syncAria() {
-        // listbox.setAttribute('aria-activedescendant', options[currentIndex].id);
         optionsContainer.setAttribute('aria-activedescendant', options[currentIndex].id);
         options.forEach((opt, i) => {
             opt.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
         });
     }
 
-    /**
-     * Ouvre le menu déroulant :
-     * - Affiche la liste
-     * - Met à jour les attributs aria-expanded
-     * - Met le focus sur l'option active
-     */
     function openDropdown() {
         optionsContainer.hidden = false;
         listbox.setAttribute('aria-expanded', 'true');
@@ -264,46 +446,25 @@ function setupCustomSelect() {
         options[currentIndex].focus();
         chevronIcon.classList.remove('fa-chevron-down');
         chevronIcon.classList.add('fa-chevron-up');
-
     }
 
-    /**
-     * Ferme le menu déroulant :
-     * - Cache la liste
-     * - Met à jour les attributs aria-expanded
-     * - Restaure le focus sur le bouton si besoin
-     * @param {boolean} restoreFocus - Si vrai, remet le focus sur le bouton
-     */
     function closeDropdown(restoreFocus = true, callFrom = true) {
         if(callFrom)
-        listbox.setAttribute('aria-expanded', 'false');
-        
+            listbox.setAttribute('aria-expanded', 'false');
         optionsContainer.hidden = true;
         btnSelected.setAttribute('aria-expanded', 'false');
         optionsContainer.setAttribute('tabindex', '-1');
         if (restoreFocus) btnSelected.focus();
         chevronIcon.classList.remove('fa-chevron-up');
         chevronIcon.classList.add('fa-chevron-down');
-
     }
 
-    /**
-     * Sélectionne une option :
-     * - Met à jour le texte affiché
-     * - Met à jour les attributs ARIA
-     * - Ferme le menu
-     * - Déclenche un événement personnalisé si demandé
-     * @param {number} index - Index de l'option à sélectionner
-     * @param {boolean} fireEvent - Si vrai, déclenche l'événement "sortChange"
-     * @param {boolean} restoreFocus - Si vrai, remet le focus sur le bouton
-     */
     function selectOption(index, fireEvent = true, restoreFocus = true) {
         currentIndex = index;
         selectedText.textContent = options[index].textContent;
         syncAria();
         closeDropdown(restoreFocus, false);
 
-        // Déclenche un événement personnalisé pour signaler le changement de tri
         if (fireEvent) {
             const event = new CustomEvent('sortChange', {
                 detail: { value: options[index].dataset.value }
@@ -312,8 +473,19 @@ function setupCustomSelect() {
         }
     }
 
+    // Bloquer toute interaction si la modale est ouverte
+    function blockIfModalOpen(e) {
+        if (isModalOpen()) {
+            e.preventDefault();
+            e.stopPropagation();
+            return true;
+        }
+        return false;
+    }
+
     // Ouvre ou ferme le menu au clic sur le bouton principal
     btnSelected.addEventListener('click', (e) => {
+        if (blockIfModalOpen(e)) return;
         e.stopPropagation();
         if (optionsContainer.hidden) {
             openDropdown();
@@ -322,8 +494,9 @@ function setupCustomSelect() {
         }
     });
 
-    // Ouvre le menu au clavier (espace, entrée, flèche)
+    // Ouvre le menu au clavier
     btnSelected.addEventListener('keydown', (e) => {
+        if (blockIfModalOpen(e)) return;
         if (['ArrowDown', 'ArrowUp', ' ', 'Enter'].includes(e.key)) {
             e.preventDefault();
             openDropdown();
@@ -332,37 +505,37 @@ function setupCustomSelect() {
 
     // Navigation clavier dans la liste d'options
     optionsContainer.addEventListener('keydown', (e) => {
+        if (blockIfModalOpen(e)) return;
         if (e.key === 'ArrowDown') {
-            // Flèche bas : passe à l'option suivante
             e.preventDefault();
             currentIndex = (currentIndex + 1) % options.length;
             options[currentIndex].focus();
             syncAria();
         } else if (e.key === 'ArrowUp') {
-            // Flèche haut : passe à l'option précédente
             e.preventDefault();
             currentIndex = (currentIndex - 1 + options.length) % options.length;
             options[currentIndex].focus();
             syncAria();
         } else if (e.key === 'Enter' || e.key === ' ') {
-            // Entrée ou espace : sélectionne l'option courante
             e.preventDefault();
             selectOption(currentIndex);
         } else if (e.key === 'Escape') {
-            // Escape : ferme le menu
             e.preventDefault();
             closeDropdown();
         }
     });
 
-    // Sélectionne une option au clic
     options.forEach((opt, i) => {
         opt.addEventListener('click', (e) => {
+            if (blockIfModalOpen(e)) return;
             e.stopPropagation();
             selectOption(i);
         });
-        // Met à jour l'index courant lors du focus (utile pour la navigation clavier)
         opt.addEventListener('focus', () => {
+            if (isModalOpen()) {
+                // Ne rien faire sur focus si modale ouverte
+                return;
+            }
             currentIndex = i;
             syncAria();
         });
@@ -370,27 +543,25 @@ function setupCustomSelect() {
 
     // Ferme le menu si clic en dehors du composant
     document.addEventListener('click', (e) => {
+        if (isModalOpen()) return; // Ignore si modale ouverte
         if (!listbox.contains(e.target)) {
             closeDropdown();
         }
     });
 
-    // Gère le tri lors du changement de sélection (à adapter selon ta logique métier)
+    // Gère le tri lors du changement de sélection
     listbox.addEventListener('sortChange', (e) => {
         currentSort = e.detail.value;
         renderGallery();
         updatePriceAndLikes();
         setupCustomSelect();
-        // console.log("Tri sélectionné :", e.detail.value);
     });
 
     // Initialisation : sélectionne l'option par défaut sans déclencher d'événement
     selectOption(currentIndex, false, false);
 
-
-// listbox.removeAttribute("aria-expanded");
-
 }
+
 
 
 
